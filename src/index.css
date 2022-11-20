@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100vh;
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@layer components {
+  .btn-primary {
+    background-color: #30A8F2 !important;
+    border-color: #30A8F2 !important;
+    @apply !text-white;
+  }
+
+  .btn-secondary {
+    border-color: #30A8F2 !important;
+    color: #30A8F2 !important;
+  }
+
+  .color-primary {
+    color: #30A8F2 !important;
+  }
+
+  .navigation-menu {
+    @apply !rounded-none !border !border-t-0 !left-[-200px] lg:!left-0 !absolute !h-full !z-[500];
+  }
+
+  .filter-menu {
+    @apply flex flex-col w-[300px] lg:w-[220px] absolute lg:relative z-[300] inset-0 bg-white drop-shadow-md lg:drop-shadow-none p-3 lg:p-0 left-[-300px] lg:left-0;
+  }
+
+  .bg-primary {
+    background-color: #CEEEFF !important;
+  }
+}
+
+.p-menubar-button {
+  display: none !important;
+}
+
+.p-menubar-end {
+  display: flex;
+  width: 100%;
+}
+
+.navigation-menu,
+.auth-content,
+.filter-menu {
+  transition: all 0.5s !important;
+}
+
+.auth-content {
+  margin-left: 200px;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  background-color: #30A8F2 !important;
+  border-color: #30A8F2 !important;
+}
+
+.cars{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.button{
+  height: 20px;
+  width: 79%;
+}
+
+@media (max-width: 1024px) {
+  .navigation-menu.active {
+    left: 0 !important;
+  }
+
+  .filter-menu.active {
+    left: 0 !important;
+  }
+
+  .auth-content {
+    margin-left: 0;
+  }
+}
