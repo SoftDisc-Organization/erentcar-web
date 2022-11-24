@@ -3,6 +3,7 @@ export default interface UpdateClient {
   lastNames: string;
   address: string;
   cellphoneNumber: number;
+  accumulatedKilometers: number;
   averageResponsibility: number;
   responseTime: number;
   rate: number;

@@ -13,7 +13,7 @@ const Car = (props: CarProps) => {
   return (
     <div className="w-[240px] mb-5 mx-auto">
       <div className="flex h-[270px] bg-[#D0EFFF] rounded-md">
-        <img alt="car" src={props.car.imagePath} className="m-auto" />
+        <img alt="car" src={props.car.imagePath[0]} className="m-auto" />
       </div>
       <h1 className="font-bold my-2">
         {props.car.carModel.carBrand.name} {props.car.carModel.name}

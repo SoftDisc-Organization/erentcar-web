@@ -7,6 +7,7 @@ export default interface User {
   address: string;
   averageResponsibility: number;
   cellphoneNumber: number;
+  accumulatedKilometers: number;
   imagePath: string;
   lastNames: string;
   names: string;

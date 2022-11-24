@@ -1,4 +1,5 @@
 import { Button } from "primereact/button";
+import { Carousel } from "primereact/carousel";
 import FavouriteButton from "../../../../Components/FavouriteButton";
 import Favourite from "../../../../Models/Favourite.model";
 import { useNavigate } from "react-router-dom";
@@ -10,11 +11,29 @@ type Props = {
 function FavoriteCard(props: Props) {
   const navigate = useNavigate();
 
+  const imageCarouselTemplate = (product: String) => {
+    return (
+      <div className="">
+        <img
+          src={`${product}`}
+          alt={`${product}`}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className="bg-card-content flex max-w-[400px] md:max-w-[600px] md:h-[300px] rounded-[15px] shadow-sm mx-auto mt-[35px]">
       <div className=" md:w-[476px] md:flex border-r-2 border-gray-300 md:border-r-0">
-        <div className="lg:w-[220px] bg-primary rounded-l-lg flex relative">
-          <img alt="car" src={props.favs.car.imagePath} className="my-auto" />
+        <div className="max-w-[280px] md:w-[220px] bg-primary rounded-l-lg flex relative">
+        <Carousel
+          value={props.favs.car.imagePath}
+          numVisible={1}
+          numScroll={1}
+          orientation="vertical"
+          verticalViewPortHeight="150px"
+          itemTemplate={imageCarouselTemplate}
+        />
           <FavouriteButton carId={props.favs.car.id} />
         </div>
         <div className="md:w-[256px] md:border-r-2 border-gray-300 px-[12px] py-[15px]">
@@ -49,6 +68,10 @@ function FavoriteCard(props: Props) {
           S/ {props.favs.car.rentAmountDay}
         </p>
         <p className="ml-0 my-2">Por día</p>
+        <p className="text-xl font-bold my-auto ml-0 my-0 mt-auto">
+          S/ {props.favs.car.rentAmountKilometer}
+        </p>
+        <p className="ml-0 my-2">Por kilometro</p>
         <Button
           label="Ver oferta"
           className="w-full !ml-0 !text-sm btn-primary"

@@ -42,9 +42,13 @@ export const Profile = () => {
                       <p>Usuario</p>
                       <p className="font-bold">{user.username}</p>
                     </li>
-                    <li>
+                    <li className="mb-3">
                       <p>Email</p>
                       <p className="font-bold">{user.email}</p>
+                    </li>
+                    <li>
+                      <p>Kilometros acumulados</p>
+                      <p className="font-bold">{client.accumulatedKilometers}</p>
                     </li>
                   </ul>
                   <ul>

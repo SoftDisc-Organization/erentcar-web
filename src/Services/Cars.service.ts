@@ -20,16 +20,20 @@ class CarsService {
     return http.post(this.BASE_URL, data);
   }
 
+  createComment(id: number, data: any) {
+    return http.post(this.BASE_URL + "/" + id + "/comment", data);
+  }
+
   getAllClientCars() {
     return http.get(this.BASE_URL + "/client");
   }
 
   deleteCar(id: number) {
-    return http.delete(`${this.BASE_URL}/${id}`)
+    return http.delete(`${this.BASE_URL}/${id}`);
   }
 
   updateCar(data: any, id: number) {
-    return http.put(`${this.BASE_URL}/${id}`, data)
+    return http.put(`${this.BASE_URL}/${id}`, data);
   }
 }
 

@@ -1,5 +1,6 @@
 import "primeicons/primeicons.css";
 import { Button } from "primereact/button";
+import { Carousel } from "primereact/carousel";
 import CarEntity from "../../../../Models/Car.model";
 import { useNavigate } from "react-router-dom";
 import FavouriteButton from "../../../../Components/FavouriteButton";
@@ -13,10 +14,28 @@ interface CarProps {
 export const Car = (props: CarProps) => {
   const navigate = useNavigate();
 
+  const imageCarouselTemplate = (product: String) => {
+    return (
+      <div className="">
+        <img
+          src={`${product}`}
+          alt={`${product}`}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className="grid grid-cols-2 gird-rows-2 lg:flex w-full lg:w-[600px] lg:h-[300px] mb-5 bg-[#F3F1F1] rounded-lg">
       <div className="col-span-1 lg:w-[220px] h-full bg-primary rounded-l-lg flex relative">
-        <img alt="car" src={props.car.imagePath} className="my-auto" />
+        <Carousel
+          value={props.car.imagePath}
+          numVisible={1}
+          numScroll={1}
+          orientation="vertical"
+          verticalViewPortHeight="150px"
+          itemTemplate={imageCarouselTemplate}
+        />
         <FavouriteButton carId={props.car.id} />
       </div>
       <div className="col-span-1 lg:w-[240px] box-border p-3 text-sm">
@@ -58,6 +77,10 @@ export const Car = (props: CarProps) => {
           S/ {props.car.rentAmountDay}
         </p>
         <p className="my-auto ml-2 lg:ml-0 lg:my-2">Por día</p>
+        <p className="text-xl font-bold my-auto ml-5 lg:ml-0 lg:my-0">
+          S/ {props.car.rentAmountKilometer}
+        </p>
+        <p className="my-auto ml-2 lg:ml-0 lg:my-2">Por kilometro</p>
         <Button
           label="Ver oferta"
           className="lg:w-full !ml-5 lg:!ml-0 !text-sm btn-primary"

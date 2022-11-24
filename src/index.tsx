@@ -15,6 +15,7 @@ import Reservations from "./Pages/AuthViews/Reservations/Reservations";
 import Statistics from "./Pages/AuthViews/Statistics/Statistics";
 import RentCar from "./Pages/AuthViews/RentCar/RentCar";
 import Profile from "./Pages/AuthViews/Profile/Profile";
+import PayRent from "./Pages/AuthViews/PayRent/PayRent";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -31,8 +32,9 @@ root.render(
           <Route path="rents" element={<Rents />} />
           <Route path="reservations" element={<Reservations />} />
           <Route path="statistics" element={<Statistics />} />
-          <Route path="rent-car" >
-            <Route path=":carId" element={<RentCar />} />
+          <Route path="rent-car/:carId" >
+            <Route index element={<RentCar />} />
+            <Route path="pay-rent" element={<PayRent />} />
           </Route>
           <Route path="profile" element={<Profile />} />
         </Route>

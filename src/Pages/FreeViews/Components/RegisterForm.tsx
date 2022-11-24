@@ -25,6 +25,7 @@ type Inputs = {
   lastNames: string;
   address: string;
   cellphoneNumber: number;
+  dni: number;
   imagePath: string;
 };
 
@@ -40,6 +41,7 @@ const schema = yup
       .required("El email es requerido"),
     names: yup.string().required("Los nombres son requeridos"),
     lastNames: yup.string().required("Los apellidos son requeridos"),
+    dni: yup.number().min(0).max(99999999).required("El DNI es requerido"),
     address: yup.string().required("La dirección es requerida"),
     cellphoneNumber: yup
       .number()
@@ -259,6 +261,28 @@ export const RegisterForm = (props: RegisterFormProps) => {
               {errors.lastNames && (
                 <small id="lastnames-help" className="p-error block">
                   {errors.lastNames?.message}
+                </small>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="dni" className="block mt-3">
+                DNI
+              </label>
+              <InputText
+                id="dni"
+                placeholder="Ingrese su DNI"
+                disabled={loading}
+                className={errors.dni && "p-invalid"}
+                {...register("dni")}
+                type="number"
+                min={0}
+                max={99999999}
+                defaultValue={88888888}
+              />
+              {errors.dni && (
+                <small id="dni-help" className="p-error block">
+                  {errors.dni?.message}
                 </small>
               )}
             </div>

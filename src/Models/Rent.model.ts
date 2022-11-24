@@ -8,4 +8,6 @@ export default interface Rent {
   finishDate: Date;
   rate: number;
   car: CarEntity;
+  rentPerDay: boolean;
+  kilometers: number;
 }

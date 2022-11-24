@@ -23,7 +23,9 @@ type Inputs = {
     // --- CAR DATA ---
     id: number,
     address: string;
-    imagePath: string;
+    imagePath1: string;
+    imagePath2: string;
+    imagePath3: string;
     active: boolean;
     carModelId: number;
     carValueInDollars: number;
@@ -34,6 +36,7 @@ type Inputs = {
     mileage: number;
     rate: number;
     rentAmountDay: number;
+    rentAmountKilometer: number;
     seating: number;
     year: number;
     clientId: number;
@@ -53,7 +56,8 @@ const schema = yup
         mechanicCondition: yup.string().required("Ingrese la condicion del carro."),
         mileage: yup.number().min(0).max(999999999).required("Ingrese el recorrido."),
         rate: yup.number().min(0).max(999999999).required("Ingrese el rate."),
-        rentAmountDay: yup.number().min(0).max(999999999).required("Ingrese el monto de renta mensual."),
+        rentAmountDay: yup.number().min(0).max(999999999).required("Ingrese el monto de renta diaria."),
+        rentAmountKilometer: yup.number().min(0).max(999999999).required("Ingrese el monto de renta por kilometro."),
         seating: yup.number().min(0).max(999999999).required("Ingrese el numero de asientos."),
         year: yup.number().min(0).max(999999999).required("Ingrese el año."),
         //licensePlate: yup.string().required("Ingrese la licencia."),
@@ -105,8 +109,35 @@ export const RegisterCarForm = (props: RegisterFormProps) => {
     };
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        let images = []
+        if (data.imagePath1 !== "") images.push(data.imagePath1)
+        if (data.imagePath2 !== "") images.push(data.imagePath2)
+        if (data.imagePath3 !== "") images.push(data.imagePath3)
+
+        let formData = {
+            //"name": data.active
+            "address": data.address,
+            "imagePath": images,
+            "active": data.active,
+            "carModelId": data.carModelId,
+            "carValueInDollars": data.carValueInDollars,
+            "category": data.category,
+            "extraInformation": data.extraInformation,
+            "manual": data.manual,
+            "mechanicCondition": data.mechanicCondition,
+            "mileage": data.mileage,
+            "rate": data.rate,
+            "rentAmountDay": data.rentAmountDay,
+            "rentAmountKilometer": data.rentAmountKilometer,
+            "seating": data.seating,
+            "year": data.year,
+            "clientId": data.clientId,
+            "licensePlate": data.licensePlate,
+            "insuranceType": data.insuranceType,
+        }
+
         setLoading(true);
-        await CarsService.createCar(data)
+        await CarsService.createCar(formData)
             .then((res) => {
                 showToastRegisterSucess();
                 props.fetchCars()
@@ -120,8 +151,34 @@ export const RegisterCarForm = (props: RegisterFormProps) => {
     };
 
     const onUpdate: SubmitHandler<Inputs> = async (data) => {
+        let images = []
+        if (data.imagePath1 !== "") images.push(data.imagePath1)
+        if (data.imagePath2 !== "") images.push(data.imagePath2)
+        if (data.imagePath3 !== "") images.push(data.imagePath3)
+
+        let formData = {
+            //"name": data.active
+            "address": data.address,
+            "imagePath": images,
+            "active": data.active,
+            "carModelId": data.carModelId,
+            "carValueInDollars": data.carValueInDollars,
+            "category": data.category,
+            "extraInformation": data.extraInformation,
+            "manual": data.manual,
+            "mechanicCondition": data.mechanicCondition,
+            "mileage": data.mileage,
+            "rate": data.rate,
+            "rentAmountDay": data.rentAmountDay,
+            "rentAmountKilometer": data.rentAmountKilometer,
+            "seating": data.seating,
+            "year": data.year,
+            "clientId": data.clientId,
+            "licensePlate": data.licensePlate,
+            "insuranceType": data.insuranceType,
+        }
         setLoading(true)
-        await CarsService.updateCar(data, props.carData.id)
+        await CarsService.updateCar(formData, props.carData.id)
             .then((res) => {
                 showToastRegisterSucess();
                 props.fetchCars()
@@ -142,12 +199,12 @@ export const RegisterCarForm = (props: RegisterFormProps) => {
 
     const fetchCarModels = async () => {
         await CarModelsService.getAllCarModels()
-        .then((res) => {
-            setCarmodels(res.data.content)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+            .then((res) => {
+                setCarmodels(res.data.content)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         setLoadingCarModels(false)
     }
 
@@ -157,7 +214,8 @@ export const RegisterCarForm = (props: RegisterFormProps) => {
         }
         fetchCarModels()
         register("clientId", { value: JSON.parse(localStorage.getItem("USER") || "").id })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        //console.log(props.carData.imagePath[1])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -263,24 +321,101 @@ export const RegisterCarForm = (props: RegisterFormProps) => {
                                 </small>
                             )}
                         </div>
+
+                        <div>
+                            <label htmlFor="year" className="block mt-3">
+                                Año
+                            </label>
+                            <InputText
+                                id="year"
+                                placeholder="Ingrese Año del Carro"
+                                disabled={loading}
+                                className={errors.year && "p-invalid"}
+                                {...register("year")}
+                                type="number"
+                                min={0}
+                                max={999999999}
+                                defaultValue={!props.carData.id ? 0 : props.carData.year}
+                            />
+                            {errors.year && (
+                                <small id="year-help" className="p-error block">
+                                    {errors.year?.message}
+                                </small>
+                            )}
+                        </div>
+
+                        {!update && <div>
+                            <label htmlFor="licensePlate" className="block mt-3">
+                                Placa
+                            </label>
+                            <InputText
+                                id="licensePlate"
+                                placeholder="Ingrese su dirección"
+                                disabled={loading}
+                                className={errors.licensePlate && "p-invalid"}
+                                defaultValue={!props.carData.id ? "" : props.carData.licensePlate}
+                                {...register("licensePlate")}
+                            />
+                            {errors.licensePlate && (
+                                <small id="licensePlate-help" className="p-error block">
+                                    {errors.licensePlate?.message}
+                                </small>
+                            )}
+                        </div>}
                     </div>
 
                     <div className="w-[330px] sm:w-full lg:w-[352px] lg:ml-3">
                         <div>
-                            <label htmlFor="imagePath" className="block mt-3">
-                                URL de imagen del Carro
+                            <label htmlFor="imagePath1" className="block mt-3">
+                                URL de primera imagen del Carro
                             </label>
                             <InputText
-                                id="imagePath"
+                                id="imagePath1"
                                 placeholder="Ingrese la URL de su imagen del Carro"
                                 disabled={loading}
-                                className={errors.imagePath && "p-invalid"}
-                                defaultValue={!props.carData.id ? "" : props.carData.imagePath}
-                                {...register("imagePath")}
+                                className={errors.imagePath1 && "p-invalid"}
+                                defaultValue={!props.carData.id ? "" : props.carData.imagePath[0]}
+                                {...register("imagePath1")}
                             />
-                            {errors.imagePath && (
+                            {errors.imagePath1 && (
                                 <small id="imagePath-help" className="p-error block">
-                                    {errors.imagePath?.message}
+                                    {errors.imagePath1?.message}
+                                </small>
+                            )}
+                        </div>
+                        <div>
+                            <label htmlFor="imagePath2" className="block mt-3">
+                                URL de segunda imagen del Carro
+                            </label>
+                            <InputText
+                                id="imagePath2"
+                                placeholder="Ingrese la URL de su imagen del Carro"
+                                disabled={loading}
+                                className={errors.imagePath2 && "p-invalid"}
+                                defaultValue={!props.carData.id ? "" : props.carData.imagePath[1]}
+                                {...register("imagePath2")}
+                            />
+                            {errors.imagePath2 && (
+                                <small id="imagePath-help" className="p-error block">
+                                    {errors.imagePath2?.message}
+                                </small>
+                            )}
+                        </div>
+                        <div>
+                            <label htmlFor="imagePath3" className="block mt-3">
+                                URL de tercera imagen del Carro
+                            </label>
+                            <InputText
+                                id="imagePath3"
+                                placeholder="Ingrese la URL de su imagen del Carro"
+                                disabled={loading}
+                                className={errors.imagePath3 && "p-invalid"}
+                                defaultValue={!props.carData.id ? "" : props.carData.imagePath[2]}
+                                {...register("imagePath3")}
+                            />
+                            {errors.imagePath3 && (
+                                <small id="imagePath-help" className="p-error block">
+                                    {errors.imagePath3?.message}
                                 </small>
                             )}
                         </div>
@@ -391,47 +526,28 @@ export const RegisterCarForm = (props: RegisterFormProps) => {
                                 </small>
                             )}
                         </div>
-
+                        
                         <div>
-                            <label htmlFor="year" className="block mt-3">
-                                Año
+                            <label htmlFor="rentAmountKilometer" className="block mt-3">
+                                Costo de Renta por kilometro
                             </label>
                             <InputText
-                                id="year"
-                                placeholder="Ingrese Año del Carro"
+                                id="rentAmountKilometer"
+                                placeholder="Ingrese el Costo de Renta por kilometro"
                                 disabled={loading}
-                                className={errors.year && "p-invalid"}
-                                {...register("year")}
+                                className={errors.rentAmountKilometer && "p-invalid"}
+                                {...register("rentAmountKilometer")}
                                 type="number"
                                 min={0}
                                 max={999999999}
-                                defaultValue={!props.carData.id ? 0 : props.carData.year}
+                                defaultValue={!props.carData.id ? 0 : props.carData.rentAmountKilometer}
                             />
-                            {errors.year && (
-                                <small id="year-help" className="p-error block">
-                                    {errors.year?.message}
+                            {errors.rentAmountKilometer && (
+                                <small id="rentAmountKilometer-help" className="p-error block">
+                                    {errors.rentAmountKilometer?.message}
                                 </small>
                             )}
                         </div>
-
-                        {!update && <div>
-                            <label htmlFor="licensePlate" className="block mt-3">
-                                Placa
-                            </label>
-                            <InputText
-                                id="licensePlate"
-                                placeholder="Ingrese su dirección"
-                                disabled={loading}
-                                className={errors.licensePlate && "p-invalid"}
-                                defaultValue={!props.carData.id ? "" : props.carData.licensePlate}
-                                {...register("licensePlate")}
-                            />
-                            {errors.licensePlate && (
-                                <small id="licensePlate-help" className="p-error block">
-                                    {errors.licensePlate?.message}
-                                </small>
-                            )}
-                        </div>}
                     </div>
 
                 </div>
